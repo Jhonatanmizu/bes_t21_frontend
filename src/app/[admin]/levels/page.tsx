@@ -48,7 +48,7 @@ const Levels = () => {
         aria-autocomplete="none"
         onChange={handleChangeSearchText}
       />
-      <section className="flex flex-col mt-4 gap-4 flex-1 h-[70vh] overflow-auto">
+      <section className="flex flex-col mt-4 gap-4 flex-1 min-h-[70vh]">
         {filteredLevels.map((level, idx) => (
           <LevelCard level={level} key={idx} />
         ))}
