@@ -21,7 +21,7 @@ const AnswerCard = ({ answer }: Props) => {
   };
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardBody className="flex flex-row items-center justify-between">
         <div className="items-center flex gap-8">
           <Image className="w-20 h-16" alt={description} src={imageUrl} />
