@@ -5,6 +5,8 @@ import { IAnswer } from "@/app/common/types";
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
 // Stories
 import { useAnswerStore } from "../store";
+//Icons
+import { RemoveIcon } from "@/app/common/icons";
 
 interface Props {
   answer: Partial<IAnswer>;
@@ -21,7 +23,7 @@ const AnswerCard = ({ answer }: Props) => {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full hover:ring-1 hover:scale-[101%]">
       <CardBody className="flex flex-row items-center justify-between">
         <div className="items-center flex gap-8">
           <Image className="w-20 h-16" alt={description} src={imageUrl} />
@@ -32,6 +34,7 @@ const AnswerCard = ({ answer }: Props) => {
             className="bg-red text-white"
             onClick={handleDelete}
             isLoading={isDeletingAnswer}
+            startContent={<RemoveIcon />}
           >
             Deletar
           </Button>
