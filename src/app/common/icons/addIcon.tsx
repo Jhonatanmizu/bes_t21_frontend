@@ -1,7 +1,7 @@
 import { IoMdAdd } from "react-icons/io";
 
-const AddIcon = () => {
-  return <IoMdAdd className="size-[50%]" />;
+const AddIcon = ({ ...props }) => {
+  return <IoMdAdd className={`text-2xl ${props.className}`} />;
 };
 
 export default AddIcon;
