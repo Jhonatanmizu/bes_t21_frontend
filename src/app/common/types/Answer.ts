@@ -1,6 +1,6 @@
 export interface IAnswer {
   uid: string;
   description: string;
-  img: string;
+  imageUrl: string;
   data: number;
 }
