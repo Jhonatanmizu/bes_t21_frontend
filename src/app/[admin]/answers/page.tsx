@@ -6,6 +6,8 @@ import { useAnswerStore } from "./store";
 // Components
 import { Button, Input, Spinner } from "@nextui-org/react";
 import AnswerCard from "./components/AnswerCard";
+//Icons
+import { AddIcon, RemoveIcon, SearchIcon } from "../../common/icons";
 
 const Answers = () => {
   const [searchText, setSearchText] = useState("");
@@ -35,6 +37,7 @@ const Answers = () => {
       <section className="flex justify-between">
         <h1 className="text-3xl mb-4">Respostas</h1>
         <Button
+          startContent={<AddIcon />}
           className="w-auto bg-secondary text-white"
           onClick={() => console.log("Clicou")}
         >
@@ -42,6 +45,7 @@ const Answers = () => {
         </Button>
       </section>
       <Input
+        variant="bordered"
         placeholder="Pesquisar resposta"
         name="search"
         value={searchText}
@@ -49,6 +53,7 @@ const Answers = () => {
         type="text"
         aria-autocomplete="none"
         onChange={handleChangeSearchText}
+        endContent={<SearchIcon />}
       />
       <section className="flex flex-col mt-4 gap-4 flex-1 min-h-[70vh] items-center">
         {isLoading ? (
