@@ -4,12 +4,15 @@ import { ChangeEvent, useEffect, useMemo, useState } from "react";
 // Stories
 import { useAnswerStore } from "./store";
 // Components
-import { Button, Input, Spinner } from "@nextui-org/react";
+import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
 import AnswerCard from "./components/AnswerCard";
+import AddAnswerModal from "./components/AddAnswerModal";
 //Icons
-import { AddIcon, RemoveIcon, SearchIcon } from "../../common/icons";
+import { AddIcon, SearchIcon } from "../../common/icons";
 
 const Answers = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const [searchText, setSearchText] = useState("");
   const { answers, fetchAll, isLoading } = useAnswerStore();
 
@@ -39,9 +42,9 @@ const Answers = () => {
         <Button
           startContent={<AddIcon />}
           className="w-auto bg-secondary text-white"
-          onClick={() => console.log("Clicou")}
+          onPress={onOpen}
         >
-          Criar nova
+          Adicionar
         </Button>
       </section>
       <Input
@@ -66,6 +69,12 @@ const Answers = () => {
           <h1>Não há dados para serem exibidos ...</h1>
         )}
       </section>
+      <AddAnswerModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        fetchAll={fetchAll}
+      />
     </main>
   );
 };
