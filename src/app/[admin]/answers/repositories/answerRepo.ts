@@ -45,7 +45,7 @@ class AnswerRepo {
       const result = query(
         answerCollectionRef,
         or(
-          where("answer", "array-contains", key),
+          where("statement", "array-contains", key),
           where("description", "array-contains", key)
         )
       );
