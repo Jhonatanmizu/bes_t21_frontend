@@ -40,7 +40,7 @@ class AnswerRepo {
     }
   }
 
-  async getAnswersByAnswerOrDescription(key: string) {
+  async getAnswersByStatementOrDescription(key: string) {
     try {
       const result = query(
         answerCollectionRef,

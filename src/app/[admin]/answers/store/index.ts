@@ -45,7 +45,7 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
   findByAnswerOrDescription: async (key) => {
     _set({ isLoading: true });
     try {
-      const answers = await answerRepo.getAnswersByAnswerOrDescription(key);
+      const answers = await answerRepo.getAnswersByStatementOrDescription(key);
       _set(() => ({ answers }));
     } catch (error) {
       console.error("Error when we tried to search answers", error);
