@@ -67,7 +67,7 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
         imageUrl: remoteUrl,
       };
       await answerRepo.createAnswer(result as CreateAnswerDTO);
-      toast.success("Resposta cadastrada com sucesso!");
+      toast.success("Resposta cadastrada!");
     } catch (error) {
       console.error("Error when we tried to store answer", error);
       toast.error("Ocorreu um erro ao cadastrar a resposta");
@@ -80,7 +80,7 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
     _set({ isDeletingAnswer: true });
     try {
       await answerRepo.deleteAnswer(uid);
-      toast.success("Resposta deletada com sucesso!");
+      toast.success("Resposta deletada!");
     } catch (error) {
       console.error("Error when we tried to remove answer", error);
     } finally {
