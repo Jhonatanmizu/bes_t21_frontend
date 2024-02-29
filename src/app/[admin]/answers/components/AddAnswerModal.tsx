@@ -35,7 +35,7 @@ const AddAnswerModal = ({ ...props }) => {
   const [selectedImage, setSelectedImage] = useState<string>("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { storeAnswer } = useAnswerStore();
+  const { storeAnswer, isLoadingNewAnswer } = useAnswerStore();
   const {
     register,
     handleSubmit,
@@ -147,11 +147,13 @@ const AddAnswerModal = ({ ...props }) => {
                 Fechar
               </Button>
               <Button
+                isLoading={isLoadingNewAnswer}
                 className="bg-green"
                 type="button"
                 onClick={async () => {
-                  await handleSubmit(handleCreateAnswer)();
-                  onClose();
+                  await handleSubmit(handleCreateAnswer)().then(() => {
+                    onClose();
+                  });
                 }}
               >
                 Cadastrar
