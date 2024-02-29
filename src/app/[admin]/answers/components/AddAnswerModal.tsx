@@ -79,6 +79,7 @@ const AddAnswerModal = ({ ...props }) => {
       onOpenChange={onOpenChange}
       placement="top-center"
       backdrop="blur"
+      onClose={() => setSelectedImage("")}
     >
       <ModalContent>
         {(onClose) => (

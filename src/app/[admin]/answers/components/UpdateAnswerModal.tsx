@@ -80,6 +80,7 @@ const UpdateAnswerModal = ({ ...props }) => {
       onOpenChange={onOpenChange}
       placement="top-center"
       backdrop="blur"
+      onClose={() => setSelectedImage("")}
     >
       <ModalContent>
         {(onClose) => (
