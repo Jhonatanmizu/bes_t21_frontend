@@ -85,7 +85,7 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
 
   updateAnswer: async (
     uid: string,
-    createAnswerData: AnswerData,
+    updateAnswerData: answerData,
     imageUrl?: string
   ) => {
     _set({ isLoadingNewAnswer: true });
