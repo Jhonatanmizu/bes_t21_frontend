@@ -7,6 +7,6 @@ export interface CreateAnswerDTO {
 export interface UpdateAnswerDto {
   uid: string;
   imageUrl: string;
-  statement: string;
+  title: string;
   description: string;
 }
