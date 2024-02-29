@@ -17,7 +17,7 @@ import { db } from "../../../config/firebase";
 // DTOS
 import { CreateAnswerDTO, UpdateAnswerDto } from "../dtos/answerDto";
 
-//Types
+// Types
 import { IAnswer } from "@/app/common/types";
 
 //Collection Reference
