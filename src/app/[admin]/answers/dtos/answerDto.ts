@@ -1,6 +1,6 @@
 export interface CreateAnswerDTO {
   imageUrl: string;
-  statement: string;
+  title: string;
   description: string;
 }
 
