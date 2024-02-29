@@ -8,7 +8,7 @@ import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
 import AnswerCard from "./components/AnswerCard";
 import AddAnswerModal from "./components/AddAnswerModal";
 
-//Icons
+// Icons
 import { AddIcon, SearchIcon } from "../../common/icons";
 
 const Answers = () => {
