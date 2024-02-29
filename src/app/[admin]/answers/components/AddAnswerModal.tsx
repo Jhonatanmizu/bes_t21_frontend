@@ -121,11 +121,10 @@ const AddAnswerModal = ({ ...props }) => {
                   </Button>
                 )}
                 <Input
-                  placeholder="Insira o enunciado"
-                  label="Enunciado"
+                  placeholder="Insira o titulo"
+                  label="Titulo"
                   type="text"
                   labelPlacement="outside"
-                  required
                   errorMessage={errors.statement && errors.statement.message}
                   {...register("statement", { required: true })}
                 />

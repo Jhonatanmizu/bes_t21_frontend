@@ -10,9 +10,7 @@ export const answerSchema = z.object({
     .min(5, "O enunciado deve ter no mínimo 5 caracteres")
     .trim(),
   description: z.coerce
-    .string({
-      required_error: "É necessário informar uma descrição para a questão!",
-    })
+    .string()
     .min(5, "A descrição deve ter no mínimo 5 caracteres!")
     .trim(),
 });
