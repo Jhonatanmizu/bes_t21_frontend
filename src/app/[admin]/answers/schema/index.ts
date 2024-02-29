@@ -3,7 +3,7 @@ import z from "zod";
 
 export const answerSchema = z.object({
   imageUrl: z.any(),
-  statement: z.coerce
+  title: z.coerce
     .string({
       required_error: "É necessário definir um enunciado!",
     })
