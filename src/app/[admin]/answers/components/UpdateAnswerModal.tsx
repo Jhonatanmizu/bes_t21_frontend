@@ -11,8 +11,6 @@ import {
   Divider,
   Input,
 } from "@nextui-org/react";
-
-//Components
 import Image from "next/image";
 
 // Schemas
