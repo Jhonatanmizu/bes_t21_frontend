@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import UpdateAnswerModal from "./UpdateAnswerModal";
-// Stories
+// Stores
 import { useAnswerStore } from "../store";
 // Icons
 import { RemoveIcon, EditIcon } from "@/app/common/icons";
