@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
-// Stories
+// Stores
 import { useAnswerStore } from "./store";
 // Components
 import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
