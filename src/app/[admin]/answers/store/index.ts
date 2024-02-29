@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { AnswerData } from "../schema";
 // Repositories
 import answerRepo from "../repositories/answerRepo";
-//DTOS
+// DTOS
 import { CreateAnswerDTO, UpdateAnswerDto } from "../dtos/answerDto";
 
 interface AnswerState {
