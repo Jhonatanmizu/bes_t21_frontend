@@ -11,23 +11,30 @@ import { AnswerData } from "../schema";
 // Repositories
 import answerRepo from "../repositories/answerRepo";
 //DTOS
-import { CreateAnswerDTO } from "../dtos/answerDto";
+import { CreateAnswerDTO, UpdateAnswerDto } from "../dtos/answerDto";
 
 interface AnswerState {
   isLoading: boolean;
   isLoadingNewAnswer: boolean;
   isDeletingAnswer: boolean;
+  isLoadingUpdateAnswer: boolean;
   answers: IAnswer[];
   fetchAll: () => Promise<void>;
   findByAnswerOrDescription: (key: string) => Promise<void>;
   storeAnswer: (createAnswerDto: AnswerData) => Promise<void>;
   deleteAnswer: (uid: string) => Promise<void>;
+  updateAnswer: (
+    uid: string,
+    UpdateAnswerDto: AnswerData,
+    imageUrl: string
+  ) => Promise<void>;
 }
 
 export const useAnswerStore = create<AnswerState>()((_set) => ({
   isLoadingNewAnswer: false,
   isLoading: true,
   isDeletingAnswer: false,
+  isLoadingUpdateAnswer: false,
   answers: [],
 
   fetchAll: async () => {
@@ -71,6 +78,40 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
     } catch (error) {
       console.error("Error when we tried to store answer", error);
       toast.error("Ocorreu um erro ao cadastrar a resposta");
+    } finally {
+      _set({ isLoadingNewAnswer: false });
+    }
+  },
+
+  updateAnswer: async (
+    uid: string,
+    createAnswerData: AnswerData,
+    imageUrl?: string
+  ) => {
+    _set({ isLoadingNewAnswer: true });
+    let remoteUrl;
+    try {
+      const file = createAnswerData.imageUrl as File;
+      if (file) {
+        remoteUrl = await storageService.uploadFile(
+          file,
+          `/answers/${file.name}${uuidv4()}`
+        );
+      } else {
+        imageUrl ? (remoteUrl = imageUrl) : (remoteUrl = "");
+      }
+
+      const result: UpdateAnswerDto = {
+        ...createAnswerData,
+        imageUrl: remoteUrl,
+        uid: uid,
+      };
+
+      await answerRepo.updateAnswer(uid, result as UpdateAnswerDto);
+      toast.success("Resposta atualizada!");
+    } catch (error) {
+      console.error("Error when we tried to update answer", error);
+      toast.error("Ocorreu um erro ao atualizar a resposta");
     } finally {
       _set({ isLoadingNewAnswer: false });
     }
