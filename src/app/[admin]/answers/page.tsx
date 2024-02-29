@@ -62,7 +62,7 @@ const Answers = () => {
       <section className="flex flex-col mt-4 gap-4 flex-1 min-h-[70vh] items-center">
         {isLoading ? (
           <Spinner label="Carregando..." color="primary" />
-        ) : filteredAnswers.length ? (
+        ) : filteredAnswers.length  > 0 ? (
           filteredAnswers.map((answer, idx) => (
             <AnswerCard answer={answer} key={idx} />
           ))
