@@ -12,7 +12,7 @@ import {
 import UpdateAnswerModal from "./UpdateAnswerModal";
 // Stories
 import { useAnswerStore } from "../store";
-//Icons
+// Icons
 import { RemoveIcon, EditIcon } from "@/app/common/icons";
 
 interface Props {
