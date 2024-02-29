@@ -7,6 +7,7 @@ import { useAnswerStore } from "./store";
 import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
 import AnswerCard from "./components/AnswerCard";
 import AddAnswerModal from "./components/AddAnswerModal";
+
 //Icons
 import { AddIcon, SearchIcon } from "../../common/icons";
 
@@ -28,7 +29,7 @@ const Answers = () => {
           .trim()
           .includes(searchText.toLowerCase().trim())
       ),
-    [searchText, answers.length]
+    [searchText, answers]
   );
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
