@@ -7,7 +7,7 @@ export const answerSchema = z.object({
     .string({
       required_error: "É necessário definir um título!",
     })
-    .min(5, "O enunciado deve ter no mínimo 5 caracteres")
+    .min(5, "O título deve ter no mínimo 5 caracteres")
     .trim(),
   description: z.coerce
     .string()
