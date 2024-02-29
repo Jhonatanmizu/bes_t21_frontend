@@ -5,7 +5,7 @@ export const answerSchema = z.object({
   imageUrl: z.any(),
   title: z.coerce
     .string({
-      required_error: "É necessário definir um enunciado!",
+      required_error: "É necessário definir um título!",
     })
     .min(5, "O enunciado deve ter no mínimo 5 caracteres")
     .trim(),
