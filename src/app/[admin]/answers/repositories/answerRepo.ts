@@ -20,7 +20,7 @@ import { CreateAnswerDTO, UpdateAnswerDto } from "../dtos/answerDto";
 // Types
 import { IAnswer } from "@/app/common/types";
 
-//Collection Reference
+// Collection Reference
 const answerCollectionRef = collection(db, "answers");
 
 class AnswerRepo {
