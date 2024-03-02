@@ -24,7 +24,7 @@ const Levels = () => {
           .trim()
           .includes(searchText.toLowerCase().trim())
       ),
-    [searchText]
+    [searchText, levels.length]
   );
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
