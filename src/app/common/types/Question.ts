@@ -5,5 +5,6 @@ export interface IQuestion {
   description: string;
   level: QuestionLevel;
   type: QuestionType;
-  answerUid: string;
+  point: number;
+  correctAnswers: string[];
 }
