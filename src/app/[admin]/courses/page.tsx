@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+// Stores
 import useCourseStore from "./store";
 // Components
 import { Button, Input } from "@nextui-org/react";
@@ -9,11 +10,7 @@ import CourseCard from "./components/CourseCard";
 const Course = () => {
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
-  const { fetchAll, courses, isGettingCourses } = useCourseStore();
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
+  const { fetchAll, courses } = useCourseStore();
 
   const filteredCourses = useMemo(
     () =>
@@ -23,19 +20,24 @@ const Course = () => {
           .trim()
           .includes(searchText.toLowerCase().trim())
       ),
-    [searchText, isGettingCourses]
+    [searchText, courses.length]
   );
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchText(value);
   };
+
   const handleNavigationToNewCourse = () => {
     router.push("/admin/courses/new");
   };
 
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
   return (
-    <div>
+    <main className="flex-1">
       <h1 className="text-3xl mb-4">Cursos</h1>
       <Input
         placeholder="Pesquisar curso"
@@ -46,6 +48,7 @@ const Course = () => {
         aria-autocomplete="none"
         onChange={handleChangeSearchText}
       />
+
       <section className="flex flex-col mt-4 gap-4 flex-1  min-h-[70vh]">
         {filteredCourses.map((course, idx) => (
           <CourseCard course={course} key={idx} />
@@ -59,7 +62,7 @@ const Course = () => {
           Criar novo
         </Button>
       </div>
-    </div>
+    </main>
   );
 };
 
