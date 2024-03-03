@@ -1,12 +1,12 @@
 export interface CreateAnswerDTO {
-  imageUrl?: string;
+  img?: string;
   title: string;
   description: string;
 }
 
 export interface UpdateAnswerDto {
   uid: string;
-  imageUrl?: string;
+  img?: string;
   title: string;
   description: string;
 }
