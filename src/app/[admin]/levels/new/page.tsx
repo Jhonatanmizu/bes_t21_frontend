@@ -46,7 +46,7 @@ const NewLevel = () => {
     reader.onload = (loadEvent) => {
       if (loadEvent.target?.result) {
         setSelectedImage(loadEvent.target?.result as string);
-        setValue("imageUrl", file);
+        setValue("img", file);
       }
     };
     reader.readAsDataURL(file);

@@ -21,12 +21,12 @@ interface Props {
 
 const AnswerCard = ({ answer }: Props) => {
   const { deleteAnswer, isDeletingAnswer, fetchAll } = useAnswerStore();
-  const { description, imageUrl, uid, title } = answer;
+  const { description, img, uid, title } = answer;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDelete = async () => {
     if (!uid) return;
-    await deleteAnswer(uid, imageUrl);
+    await deleteAnswer(uid);
     await fetchAll();
   };
 
@@ -35,7 +35,7 @@ const AnswerCard = ({ answer }: Props) => {
       <Card className="w-full hover:ring-1 hover:scale-[101%]">
         <CardBody className="flex flex-row items-center justify-between">
           <div className="items-center flex gap-8">
-            <Image className="w-20 h-16" alt={description} src={imageUrl} />
+            <Image className="w-20 h-16" alt={description} src={img} />
             <h4>{title}</h4>
           </div>
           <div className="flex items-center gap-2">

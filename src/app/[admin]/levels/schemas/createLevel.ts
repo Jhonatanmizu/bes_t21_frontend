@@ -27,8 +27,8 @@ export const createLevelSchema = z.object({
     required_error: "É necessário informar o intervalo de ínicio!",
   }),
 
-  imageUrl: z.any(),
-  // imageUrl: z
+  img: z.any(),
+  // img: z
   //   .any()
   //   .refine((files) => files?.length == 1, "Imagem é obrigatória.")
   //   .refine(

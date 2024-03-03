@@ -1,25 +1,27 @@
 "use client";
 import NextImage from "next/image";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 // Icons
 import { AddFileSvg } from "../icons";
 
 // Components
 import { Button, Image } from "@nextui-org/react";
+import { UseFormSetValue } from "react-hook-form";
 
 interface Props {
-  setValue: (imageUrl: string, file: File) => void;
-  imageUrl?: string;
+  setValue: UseFormSetValue<
+    | {
+        img?: any;
+      }
+    | any
+  >;
+  img?: string;
 }
 
-const ImagePicker = ({ setValue, imageUrl }: Props) => {
-  //setValues comes from react-hook-form
-
+const ImagePicker = ({ setValue, img }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string>("");
-
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleFileInput = () => {
     if (!fileInputRef?.current || !fileInputRef?.current.click) return;
     fileInputRef?.current?.click();
@@ -32,11 +34,17 @@ const ImagePicker = ({ setValue, imageUrl }: Props) => {
     reader.onload = (loadEvent) => {
       if (loadEvent.target?.result) {
         setSelectedImage(loadEvent.target?.result as string);
-        setValue("imageUrl", file);
+        setValue("img", file);
       }
     };
     reader.readAsDataURL(file);
   };
+
+  useEffect(() => {
+    if (img) {
+      setSelectedImage(img);
+    }
+  }, [img]);
 
   return (
     <div className="flex w-full h-full">
@@ -48,10 +56,10 @@ const ImagePicker = ({ setValue, imageUrl }: Props) => {
         ref={fileInputRef}
         onChange={onImageChange}
       />
-      {imageUrl || selectedImage ? (
+      {selectedImage ? (
         <Image
           as={NextImage}
-          src={imageUrl || selectedImage}
+          src={selectedImage}
           loading="lazy"
           alt="Imagem selecionada"
           width={400}
