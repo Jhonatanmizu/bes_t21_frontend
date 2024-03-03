@@ -1,10 +1,6 @@
 "use client";
-
 import { useForm } from "react-hook-form";
-
-//Zod
 import { zodResolver } from "@hookform/resolvers/zod";
-
 //Components
 import ImagePicker from "../../../common/components/ImagePicker";
 import {
@@ -17,10 +13,8 @@ import {
   Divider,
   Input,
 } from "@nextui-org/react";
-
 // Schemas
-import { AnswerData, answerSchema } from "../schema";
-
+import { answerData, answerSchema } from "../schema";
 // Stores
 import { useAnswerStore } from "../store/";
 
@@ -39,11 +33,11 @@ const AddAnswerModal = ({ isOpen, onOpenChange, fetchAll }: Props) => {
     getValues,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<AnswerData>({
+  } = useForm<answerData>({
     resolver: zodResolver(answerSchema),
   });
 
-  const handleCreateAnswer = async (data: AnswerData) => {
+  const handleCreateAnswer = async (data: answerData) => {
     try {
       await storeAnswer(data);
       await fetchAll();

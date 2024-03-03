@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+// Components
 import {
   Modal,
   ModalContent,
@@ -11,24 +11,13 @@ import {
   Divider,
   Input,
 } from "@nextui-org/react";
-
+import { ImagePicker } from "@/app/common";
 // Schemas
-import { AnswerData, answerSchema } from "../schema";
-
+import { answerData, answerSchema } from "../schema";
 // Types
 import { IAnswer } from "@/app/common/types";
-
 // Stores
 import { useAnswerStore } from "../store/";
-
-//Icons
-import { ImagePicker } from "@/app/common";
-interface Answer {
-  description: string;
-  imageUrl: string;
-  uid: string;
-  title: string;
-}
 
 interface Props {
   isOpen: boolean;
@@ -45,23 +34,22 @@ const UpdateAnswerModal = ({
   fetchAll,
   answer,
 }: Props) => {
-  const { description, imageUrl, uid, title } = answer;
+  const { description, img, uid, title } = answer;
 
   const { updateAnswer, isLoadingNewAnswer } = useAnswerStore();
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<AnswerData>({
+  } = useForm<answerData>({
     resolver: zodResolver(answerSchema),
   });
 
-  const handleUpdateAnswer = async (data: AnswerData) => {
+  const handleUpdateAnswer = async (data: answerData) => {
     try {
-      await updateAnswer(uid, data, imageUrl);
+      await updateAnswer(uid, data);
       await fetchAll();
       reset();
     } catch (error) {
@@ -89,7 +77,7 @@ const UpdateAnswerModal = ({
                 className="flex flex-col gap-2"
                 onSubmit={handleSubmit(handleUpdateAnswer)}
               >
-                <ImagePicker setValue={setValue} imageUrl={imageUrl} />
+                <ImagePicker setValue={setValue} img={img} />
                 <Input
                   placeholder="Insira o titulo"
                   label="Titulo"
