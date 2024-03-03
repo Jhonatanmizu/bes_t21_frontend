@@ -42,7 +42,7 @@ const NewCourse = () => {
     <main className="flex-1">
       <h1 className="text-3xl mb-4">Cadastro de curso</h1>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-        <ImagePicker onSelectImage={handleSetImage} />
+        <ImagePicker setValue={setValue} />
         <Input
           placeholder="Insira o nome do curso"
           label="Nome"

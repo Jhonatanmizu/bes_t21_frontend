@@ -1,6 +1,6 @@
 export interface ILevel {
   uid: string;
-  imageUrl: string;
+  img: string;
   title: string;
   description: string;
   startIn: number;

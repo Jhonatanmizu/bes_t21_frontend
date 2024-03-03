@@ -14,7 +14,7 @@ interface Props {
 const LevelCard = ({ level }: Props) => {
   const router = useRouter();
   const { deleteLevel, isDeletingLevel, fetchAll } = useLevelStore();
-  const { title, imageUrl, uid } = level;
+  const { title, img, uid } = level;
 
   const handleEdit = () => {
     router.push(`/admin/levels/new/${uid}`);
@@ -29,7 +29,7 @@ const LevelCard = ({ level }: Props) => {
     <Card>
       <CardBody className="flex flex-row items-center justify-between">
         <div className="items-center flex gap-8">
-          <Image className="w-20 h-16" alt={title} src={imageUrl} />
+          <Image className="w-20 h-16" alt={title} src={img} />
           <h4>{title}</h4>
         </div>
         <div className="flex items-center gap-2">

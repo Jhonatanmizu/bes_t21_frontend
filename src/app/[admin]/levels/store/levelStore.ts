@@ -42,14 +42,14 @@ export const useLevelStore = create<LevelState>()((_set) => ({
   storeLevel: async (createLevelData: createLevelData) => {
     _set({ isLoadingNewLevel: true });
     try {
-      const file = createLevelData.imageUrl as File;
+      const file = createLevelData.img as File;
       const remoteUrl = await storageService.uploadFile(
         file,
         `/levels/${file.name}${uuidv4()}`
       );
       const result: CreateLevelDTO = {
         ...createLevelData,
-        imageUrl: remoteUrl,
+        img: remoteUrl,
       };
       await levelRepo.createLevel(result as CreateLevelDTO);
       toast.success("Ranking cadastrado com sucesso!");

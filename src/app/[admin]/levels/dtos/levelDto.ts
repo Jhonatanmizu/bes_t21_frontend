@@ -1,5 +1,5 @@
 export interface CreateLevelDTO {
-  imageUrl: string;
+  img: string;
   title: string;
   description: string;
   startIn: number;
@@ -7,7 +7,7 @@ export interface CreateLevelDTO {
 }
 
 export interface UpdateLevelDto {
-  imageUrl: string;
+  img: string;
   title: string;
   description: string;
   startIn: number;
