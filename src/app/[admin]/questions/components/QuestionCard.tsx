@@ -23,11 +23,9 @@ const QuestionCard = ({ question }: Props) => {
       <CardBody>
         <div className="flex flex-row items-center justify-between">
           <div className="items-center flex gap-8">
-            <Image
-              src={question.img}
-              alt="question cover"
-              className="w-20 h-16"
-            />
+            {img && (
+              <Image src={img} alt="question cover" className="w-20 h-16" />
+            )}
             <h4>{description}</h4>
           </div>
           <div className="flex items-center gap-2">
