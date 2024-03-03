@@ -43,6 +43,7 @@ const ImagePicker = ({ setValue, img }: Props) => {
   useEffect(() => {
     if (img) {
       setSelectedImage(img);
+      setValue("img", img);
     }
   }, [img]);
 

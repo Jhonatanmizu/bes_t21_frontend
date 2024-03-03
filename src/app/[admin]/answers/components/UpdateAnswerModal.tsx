@@ -34,7 +34,7 @@ const UpdateAnswerModal = ({
   fetchAll,
   answer,
 }: Props) => {
-  const { description, img, uid, title } = answer;
+  const { description, img, uid, title, remotePath } = answer;
 
   const { updateAnswer, isLoadingNewAnswer } = useAnswerStore();
   const {
@@ -77,6 +77,14 @@ const UpdateAnswerModal = ({
                 className="flex flex-col gap-2"
                 onSubmit={handleSubmit(handleUpdateAnswer)}
               >
+                <Input
+                  type="text"
+                  labelPlacement="outside"
+                  errorMessage={errors.remotePath && errors.remotePath.message}
+                  {...register("remotePath", { required: true })}
+                  defaultValue={remotePath}
+                  className="hidden"
+                />
                 <ImagePicker setValue={setValue} img={img} />
                 <Input
                   placeholder="Insira o titulo"

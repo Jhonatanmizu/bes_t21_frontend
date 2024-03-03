@@ -3,4 +3,5 @@ export interface IAnswer {
   description: string;
   img: string;
   title: string;
+  remotePath: string;
 }

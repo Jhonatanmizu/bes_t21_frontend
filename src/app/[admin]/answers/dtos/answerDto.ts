@@ -2,6 +2,7 @@ export interface CreateAnswerDTO {
   img?: string;
   title: string;
   description: string;
+  remotePath: string;
 }
 
 export interface UpdateAnswerDto {
@@ -9,4 +10,5 @@ export interface UpdateAnswerDto {
   img?: string;
   title: string;
   description: string;
+  remotePath: string;
 }

@@ -19,15 +19,8 @@ const Answers = () => {
     fetchAll();
   }, []);
 
-  const filteredAnswers = useMemo(
-    () =>
-      answers.filter((answer) =>
-        answer.title
-          .toLowerCase()
-          .trim()
-          .includes(searchText.toLowerCase().trim())
-      ),
-    [searchText, answers]
+  const filteredAnswers = answers.filter((answer) =>
+    answer.title.toLowerCase().trim().includes(searchText.toLowerCase().trim())
   );
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
