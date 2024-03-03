@@ -1,13 +1,11 @@
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-
 // Stores
 import { useAnswerStore } from "./store";
 // Components
 import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
 import AnswerCard from "./components/AnswerCard";
 import AddAnswerModal from "./components/AddAnswerModal";
-
 // Icons
 import { AddIcon, SearchIcon } from "../../common/icons";
 
@@ -24,7 +22,7 @@ const Answers = () => {
   const filteredAnswers = useMemo(
     () =>
       answers.filter((answer) =>
-        answer.description
+        answer.title
           .toLowerCase()
           .trim()
           .includes(searchText.toLowerCase().trim())
@@ -62,7 +60,7 @@ const Answers = () => {
       <section className="flex flex-col mt-4 gap-4 flex-1 min-h-[70vh] items-center">
         {isLoading ? (
           <Spinner label="Carregando..." color="primary" />
-        ) : filteredAnswers.length  > 0 ? (
+        ) : filteredAnswers.length > 0 ? (
           filteredAnswers.map((answer, idx) => (
             <AnswerCard answer={answer} key={idx} />
           ))
@@ -72,7 +70,6 @@ const Answers = () => {
       </section>
       <AddAnswerModal
         isOpen={isOpen}
-        onOpen={onOpen}
         onOpenChange={onOpenChange}
         fetchAll={fetchAll}
       />
