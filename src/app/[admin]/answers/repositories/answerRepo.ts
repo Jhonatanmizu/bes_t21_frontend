@@ -40,6 +40,13 @@ class AnswerRepo {
     }
   }
 
+  async getAnswerByUid(uid: string) {
+    const answerRef = this.getDocRef(uid);
+    const result = await getDoc(answerRef);
+    if (!result.exists) return null;
+    return result.data() as IAnswer;
+  }
+
   async getAnswersByTitleOrDescription(key: string) {
     try {
       const result = query(
