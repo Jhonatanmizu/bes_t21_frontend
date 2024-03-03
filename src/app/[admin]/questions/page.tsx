@@ -4,10 +4,13 @@ import { ChangeEvent, useEffect, useMemo, useState } from "react";
 // Stores
 import useQuestionStore from "./store";
 // Components
-import { Input, Spinner } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
+import QuestionCard from "./components/QuestionCard";
+import QuestionModal from "./components/QuestionModal";
 
 const Questions = () => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { questions, isLoadingQuestions, getAllQuestions } = useQuestionStore();
 
@@ -21,6 +24,10 @@ const Questions = () => {
       ),
     [questions.length, searchText]
   );
+
+  const toggleModalOpen = () => {
+    setIsModalOpen((previousState) => !previousState);
+  };
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -37,7 +44,10 @@ const Questions = () => {
 
   return (
     <main className="flex-1">
-      <h1 className="text-3xl mb-4">Questões</h1>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-3xl mb-4">Questões</h1>
+        <Button onClick={toggleModalOpen}>Criar nova questão</Button>
+      </div>
       <Input
         placeholder="Pesquisar questão"
         name="search"
@@ -51,6 +61,12 @@ const Questions = () => {
         <div className="flex-1 flex p-8 items-center justify-center">
           <Spinner size="lg" />
         </div>
+      )}
+      {filteredQuestions.map((question, idx) => (
+        <QuestionCard question={question} key={idx} />
+      ))}
+      {isModalOpen && (
+        <QuestionModal isOpen={isModalOpen} onClose={toggleModalOpen} />
       )}
     </main>
   );
