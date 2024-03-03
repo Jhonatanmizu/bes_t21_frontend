@@ -40,12 +40,12 @@ class AnswerRepo {
     }
   }
 
-  async getAnswersByStatementOrDescription(key: string) {
+  async getAnswersByTitleOrDescription(key: string) {
     try {
       const result = query(
         answerCollectionRef,
         or(
-          where("statement", "array-contains", key),
+          where("title", "array-contains", key),
           where("description", "array-contains", key)
         )
       );

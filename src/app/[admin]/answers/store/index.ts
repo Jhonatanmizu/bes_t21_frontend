@@ -22,11 +22,11 @@ interface AnswerState {
   fetchAll: () => Promise<void>;
   findByAnswerOrDescription: (key: string) => Promise<void>;
   storeAnswer: (createAnswerDto: AnswerData) => Promise<void>;
-  deleteAnswer: (uid: string) => Promise<void>;
+  deleteAnswer: (uid: string, imageUrl?: string) => Promise<void>;
   updateAnswer: (
     uid: string,
     UpdateAnswerDto: AnswerData,
-    imageUrl: string
+    imageUrl?: string
   ) => Promise<void>;
 }
 
@@ -52,7 +52,7 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
   findByAnswerOrDescription: async (key) => {
     _set({ isLoading: true });
     try {
-      const answers = await answerRepo.getAnswersByStatementOrDescription(key);
+      const answers = await answerRepo.getAnswersByTitleOrDescription(key);
       _set(() => ({ answers }));
     } catch (error) {
       console.error("Error when we tried to search answers", error);
@@ -64,15 +64,20 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
   storeAnswer: async (createAnswerData: AnswerData) => {
     _set({ isLoadingNewAnswer: true });
     try {
+      let remoteUrl = "";
       const file = createAnswerData.imageUrl as File;
-      const remoteUrl = await storageService.uploadFile(
-        file,
-        `/answers/${file.name}${uuidv4()}`
-      );
+      if (file) {
+        remoteUrl = await storageService.uploadFile(
+          file,
+          `/answers/${file.name}${uuidv4()}`
+        );
+      }
+
       const result: CreateAnswerDTO = {
         ...createAnswerData,
         imageUrl: remoteUrl,
       };
+
       await answerRepo.createAnswer(result as CreateAnswerDTO);
       toast.success("Resposta cadastrada!");
     } catch (error) {
@@ -85,25 +90,28 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
 
   updateAnswer: async (
     uid: string,
-    updateAnswerData: answerData,
+    updateAnswerData: AnswerData,
     imageUrl?: string
   ) => {
     _set({ isLoadingNewAnswer: true });
-    let remoteUrl;
     try {
-      const file = createAnswerData.imageUrl as File;
+      let remoteUrl = "";
+      const file = updateAnswerData.imageUrl as File;
+
+      if (file && imageUrl) {
+        await storageService.deleteFile(imageUrl);
+      }
+
       if (file) {
         remoteUrl = await storageService.uploadFile(
           file,
           `/answers/${file.name}${uuidv4()}`
         );
-      } else {
-        imageUrl ? (remoteUrl = imageUrl) : (remoteUrl = "");
       }
 
       const result: UpdateAnswerDto = {
-        ...createAnswerData,
-        imageUrl: remoteUrl,
+        ...updateAnswerData,
+        imageUrl: remoteUrl || imageUrl,
         uid: uid,
       };
 
@@ -117,9 +125,12 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
     }
   },
 
-  deleteAnswer: async (uid: string) => {
+  deleteAnswer: async (uid: string, imageUrl?: string) => {
     _set({ isDeletingAnswer: true });
     try {
+      if (imageUrl) {
+        await storageService.deleteFile(imageUrl);
+      }
       await answerRepo.deleteAnswer(uid);
       toast.success("Resposta deletada!");
     } catch (error) {

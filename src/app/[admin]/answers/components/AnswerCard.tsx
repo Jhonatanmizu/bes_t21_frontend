@@ -16,17 +16,17 @@ import { useAnswerStore } from "../store";
 import { RemoveIcon, EditIcon } from "@/app/common/icons";
 
 interface Props {
-  answer: Partial<IAnswer>;
+  answer: IAnswer;
 }
 
 const AnswerCard = ({ answer }: Props) => {
   const { deleteAnswer, isDeletingAnswer, fetchAll } = useAnswerStore();
-  const { description, imageUrl, uid, statement } = answer;
+  const { description, imageUrl, uid, title } = answer;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDelete = async () => {
     if (!uid) return;
-    await deleteAnswer(uid);
+    await deleteAnswer(uid, imageUrl);
     await fetchAll();
   };
 
@@ -36,7 +36,7 @@ const AnswerCard = ({ answer }: Props) => {
         <CardBody className="flex flex-row items-center justify-between">
           <div className="items-center flex gap-8">
             <Image className="w-20 h-16" alt={description} src={imageUrl} />
-            <h4>{statement}</h4>
+            <h4>{title}</h4>
           </div>
           <div className="flex items-center gap-2">
             <Button

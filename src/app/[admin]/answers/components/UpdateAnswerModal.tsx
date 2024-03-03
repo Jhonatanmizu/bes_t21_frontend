@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useRef, useState } from "react";
+
 import {
   Modal,
   ModalContent,
@@ -11,30 +11,49 @@ import {
   Divider,
   Input,
 } from "@nextui-org/react";
-import Image from "next/image";
 
 // Schemas
 import { AnswerData, answerSchema } from "../schema";
+
+// Types
+import { IAnswer } from "@/app/common/types";
 
 // Stores
 import { useAnswerStore } from "../store/";
 
 //Icons
-import { AddFileSvg } from "../../../common/icons";
+import { ImagePicker } from "@/app/common";
+interface Answer {
+  description: string;
+  imageUrl: string;
+  uid: string;
+  title: string;
+}
 
-const UpdateAnswerModal = ({ ...props }) => {
-  const { isOpen, onOpen, onOpenChange, fetchAll, answer } = props;
-  const { description, imageUrl, uid, statement } = answer;
+interface Props {
+  isOpen: boolean;
+  onOpen: () => void;
+  onOpenChange: (isOpen: boolean) => void;
+  fetchAll: () => void;
+  answer: IAnswer;
+}
 
-  const [selectedImage, setSelectedImage] = useState<string>("");
+const UpdateAnswerModal = ({
+  isOpen,
+  onOpen,
+  onOpenChange,
+  fetchAll,
+  answer,
+}: Props) => {
+  const { description, imageUrl, uid, title } = answer;
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { updateAnswer, isLoadingNewAnswer } = useAnswerStore();
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<AnswerData>({
     resolver: zodResolver(answerSchema),
@@ -44,27 +63,10 @@ const UpdateAnswerModal = ({ ...props }) => {
     try {
       await updateAnswer(uid, data, imageUrl);
       await fetchAll();
+      reset();
     } catch (error) {
       console.error("Error when we tried to create a new answer", error);
     }
-  };
-
-  const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = !!e.target.files ? e.target.files[0] : null;
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (loadEvent) => {
-      if (loadEvent.target?.result) {
-        setSelectedImage(loadEvent.target?.result as string);
-        setValue("imageUrl", file);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleFileInput = () => {
-    if (!fileInputRef?.current || !fileInputRef?.current.click) return;
-    fileInputRef?.current?.click();
   };
 
   return (
@@ -73,7 +75,7 @@ const UpdateAnswerModal = ({ ...props }) => {
       onOpenChange={onOpenChange}
       placement="top-center"
       backdrop="blur"
-      onClose={() => setSelectedImage("")}
+      onClose={() => reset()}
     >
       <ModalContent>
         {(onClose) => (
@@ -87,41 +89,15 @@ const UpdateAnswerModal = ({ ...props }) => {
                 className="flex flex-col gap-2"
                 onSubmit={handleSubmit(handleUpdateAnswer)}
               >
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  multiple={false}
-                  ref={fileInputRef}
-                  onChange={onImageChange}
-                />
-                {imageUrl || selectedImage ? (
-                  <Image
-                    src={selectedImage || imageUrl}
-                    alt="Imagem selecionada"
-                    width={200}
-                    height={400}
-                    className="rounded-xl min-w-full bg-primary h-56 cursor-pointer"
-                    onClick={handleFileInput}
-                  />
-                ) : (
-                  <Button
-                    isIconOnly
-                    aria-label="Selecione uma imagem"
-                    className="rounded-xl min-w-full bg-primary h-56 cursor-pointer"
-                    onClick={handleFileInput}
-                  >
-                    <AddFileSvg />
-                  </Button>
-                )}
+                <ImagePicker setValue={setValue} imageUrl={imageUrl} />
                 <Input
                   placeholder="Insira o titulo"
                   label="Titulo"
                   type="text"
                   labelPlacement="outside"
-                  errorMessage={errors.statement && errors.statement.message}
-                  {...register("statement", { required: true })}
-                  defaultValue={statement}
+                  errorMessage={errors.title && errors.title.message}
+                  {...register("title", { required: true })}
+                  defaultValue={title}
                 />
                 <Input
                   placeholder="Insira uma descrição"
@@ -148,7 +124,9 @@ const UpdateAnswerModal = ({ ...props }) => {
                 type="button"
                 onClick={async () => {
                   await handleSubmit(handleUpdateAnswer)().then(() => {
-                    onOpen();
+                    if (isValid) {
+                      onOpen();
+                    }
                   });
                 }}
               >

@@ -1,11 +1,12 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+
 //Zod
 import { zodResolver } from "@hookform/resolvers/zod";
 
-//React
-import { useForm } from "react-hook-form";
-import { ChangeEvent, useRef, useState } from "react";
-
-//NextUi
+//Components
+import ImagePicker from "../../../common/components/ImagePicker";
 import {
   Modal,
   ModalContent,
@@ -17,30 +18,26 @@ import {
   Input,
 } from "@nextui-org/react";
 
-//Components
-import Image from "next/image";
-
 // Schemas
 import { AnswerData, answerSchema } from "../schema";
 
 // Stores
 import { useAnswerStore } from "../store/";
 
-//Icons
-import { AddFileSvg } from "../../../common/icons";
+interface Props {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  fetchAll: () => void;
+}
 
-const AddAnswerModal = ({ ...props }) => {
-  const { isOpen, onOpen, onOpenChange, fetchAll } = props;
-
-  const [selectedImage, setSelectedImage] = useState<string>("");
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const AddAnswerModal = ({ isOpen, onOpenChange, fetchAll }: Props) => {
   const { storeAnswer, isLoadingNewAnswer } = useAnswerStore();
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<AnswerData>({
     resolver: zodResolver(answerSchema),
@@ -50,27 +47,10 @@ const AddAnswerModal = ({ ...props }) => {
     try {
       await storeAnswer(data);
       await fetchAll();
+      reset();
     } catch (error) {
       console.error("Error when we tried to create a new answer", error);
     }
-  };
-
-  const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = !!e.target.files ? e.target.files[0] : null;
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (loadEvent) => {
-      if (loadEvent.target?.result) {
-        setSelectedImage(loadEvent.target?.result as string);
-        setValue("imageUrl", file);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleFileInput = () => {
-    if (!fileInputRef?.current || !fileInputRef?.current.click) return;
-    fileInputRef?.current?.click();
   };
 
   return (
@@ -79,7 +59,7 @@ const AddAnswerModal = ({ ...props }) => {
       onOpenChange={onOpenChange}
       placement="top-center"
       backdrop="blur"
-      onClose={() => setSelectedImage("")}
+      onClose={() => reset()}
     >
       <ModalContent>
         {(onClose) => (
@@ -93,40 +73,14 @@ const AddAnswerModal = ({ ...props }) => {
                 className="flex flex-col gap-2"
                 onSubmit={handleSubmit(handleCreateAnswer)}
               >
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  multiple={false}
-                  ref={fileInputRef}
-                  onChange={onImageChange}
-                />
-                {selectedImage ? (
-                  <Image
-                    src={selectedImage}
-                    alt="Imagem selecionada"
-                    width={200}
-                    height={400}
-                    className="rounded-xl min-w-full bg-primary h-56 cursor-pointer"
-                    onClick={handleFileInput}
-                  />
-                ) : (
-                  <Button
-                    isIconOnly
-                    aria-label="Selecione uma imagem"
-                    className="rounded-xl min-w-full bg-primary h-56 cursor-pointer"
-                    onClick={handleFileInput}
-                  >
-                    <AddFileSvg />
-                  </Button>
-                )}
+                <ImagePicker setValue={setValue} />
                 <Input
                   placeholder="Insira o titulo"
                   label="Titulo"
                   type="text"
                   labelPlacement="outside"
-                  errorMessage={errors.statement && errors.statement.message}
-                  {...register("statement", { required: true })}
+                  errorMessage={errors.title && errors.title.message}
+                  {...register("title", { required: true })}
                 />
                 <Input
                   placeholder="Insira uma descrição"
@@ -152,7 +106,9 @@ const AddAnswerModal = ({ ...props }) => {
                 type="button"
                 onClick={async () => {
                   await handleSubmit(handleCreateAnswer)().then(() => {
-                    onClose();
+                    if (isValid) {
+                      onClose();
+                    }
                   });
                 }}
               >
