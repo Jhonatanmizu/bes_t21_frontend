@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 
 interface Props {
@@ -35,7 +36,7 @@ const ImagePicker = ({ onSelectImage }: Props) => {
         ref={fileInputRef}
         onChange={onImageChange}
       />
-      <img
+      <Image
         src={selectedImage}
         alt="selected image"
         className="flex-1 w-full bg-primary min-h-40 max-h-96 rounded-xl cursor-pointer"
