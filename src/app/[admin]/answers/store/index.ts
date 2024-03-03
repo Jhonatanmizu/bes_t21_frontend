@@ -62,16 +62,17 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
     try {
       let remoteUrl = "";
       const file = createAnswerData.img as File;
+      let remotePath = "";
+
       if (file) {
-        remoteUrl = await storageService.uploadFile(
-          file,
-          `/answers/${file.name}${uuidv4()}`
-        );
+        remotePath = `/answers/${file.name}${uuidv4()}`;
+        remoteUrl = await storageService.uploadFile(file, remotePath);
       }
 
       const result: CreateAnswerDTO = {
         ...createAnswerData,
         img: remoteUrl,
+        remotePath,
       };
 
       await answerRepo.createAnswer(result as CreateAnswerDTO);
@@ -87,22 +88,21 @@ export const useAnswerStore = create<AnswerState>()((_set) => ({
   updateAnswer: async (uid: string, updateAnswerData: answerData) => {
     _set({ isLoadingNewAnswer: true });
     try {
-      let remoteUrl = "";
+      const previousAnswerData = (await answerRepo.getAnswerByUid(
+        uid
+      )) as IAnswer;
       const file = updateAnswerData.img as File;
-      if (file) {
-        const previousAnswerData = await answerRepo.getAnswerByUid(uid);
-        const previousImgUrl = previousAnswerData?.img as string;
-        await storageService.deleteFile(previousImgUrl);
-        remoteUrl = await storageService.uploadFile(
-          file,
-          `/answers/${file.name}${uuidv4()}`
-        );
+      const remotePath =
+        previousAnswerData.remotePath || `/answers/${file.name}${uuidv4()}`;
+      let remoteUrl = previousAnswerData.img;
+      if (file instanceof File) {
+        remoteUrl = await storageService.uploadFile(file, remotePath);
       }
-
       const result: UpdateAnswerDto = {
         ...updateAnswerData,
         img: remoteUrl,
         uid: uid,
+        remotePath,
       };
 
       await answerRepo.updateAnswer(uid, result as UpdateAnswerDto);

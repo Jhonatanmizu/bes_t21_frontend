@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const answerSchema = z.object({
+  remotePath: z.string().default(""),
   img: z.any(),
   title: z.coerce
     .string({
