@@ -4,4 +4,5 @@ export interface ICourse {
   title: string;
   description: string;
   requirements: string[];
+  remotePath: string;
 }
