@@ -4,7 +4,6 @@ import {
   setDoc,
   collection,
   getDoc,
-  addDoc,
   query,
   where,
   getDocs,
@@ -69,6 +68,13 @@ class LevelRepo {
     } catch (error) {
       console.error("Error when we tried to getLevels", error);
     }
+  }
+
+  async getLevelsByUid(uid: string) {
+    const levelRef = this.getDocRef(uid);
+    const result = await getDoc(levelRef);
+    if (!result.exists) return null;
+    return result.data() as ILevel;
   }
 
   async updateLevel(uid: string, updateLevelDto: UpdateLevelDto) {
