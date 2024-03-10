@@ -4,5 +4,6 @@ export interface ILevel {
   title: string;
   description: string;
   startIn: number;
-  numberOfStart: number;
+  numberOfStars: number;
+  remotePath: string;
 }
