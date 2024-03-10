@@ -3,7 +3,5 @@ export interface CourseSessionDTO {
   img?: string;
   title: string;
   description: string;
-  startAt: string;
-  endAt: string;
   remotePath: string;
 }

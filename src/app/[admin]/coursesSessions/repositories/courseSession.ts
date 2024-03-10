@@ -37,7 +37,7 @@ class CourseSessionRepo {
       await setDoc(newCourseSessionRef, {
         ...courseSessionDto,
         uid: newCourseSessionRef.id,
-      });
+      } as CourseSessionDTO);
     } catch (error) {
       console.error("Error when we tried to create course session", error);
     }
