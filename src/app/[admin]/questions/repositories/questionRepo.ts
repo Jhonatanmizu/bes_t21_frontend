@@ -18,7 +18,7 @@ class QuestionRepo {
     return doc(questionCollectionRef);
   }
 
-  async createQuestion(data: IQuestion) {
+  async createQuestion(data: Partial<IQuestion>) {
     const newQuestionRef = this.getDocRef();
     return await setDoc(newQuestionRef, { ...data, uid: newQuestionRef.id });
   }
