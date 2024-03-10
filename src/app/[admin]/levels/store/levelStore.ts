@@ -101,6 +101,7 @@ export const useLevelStore = create<LevelState>()((_set) => ({
       const result: UpdateLevelDto = {
         ...updateLevelData,
         img: remoteUrl,
+        uid,
         remotePath,
       };
 

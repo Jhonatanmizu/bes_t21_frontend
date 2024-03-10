@@ -3,7 +3,7 @@ export interface ILevel {
   img: string;
   title: string;
   description: string;
-  startIn: number;
-  numberOfStars: number;
+  startIn: number | string;
+  numberOfStars: number | string;
   remotePath: string;
 }

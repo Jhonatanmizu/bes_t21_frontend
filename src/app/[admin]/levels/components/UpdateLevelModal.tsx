@@ -16,8 +16,7 @@ import {
 } from "@nextui-org/react";
 // Schemas
 import { updateLevelSchema, updateLevelData } from "../schemas";
-import levelRepo from "../repositories/levelRepo";
-import { useEffect, useState } from "react";
+// Types
 import { ILevel } from "@/app/common/types";
 
 interface Props {
@@ -25,29 +24,30 @@ interface Props {
   onOpen: () => void;
   onOpenChange: (isOpen: boolean) => void;
   uid: string;
+  level: ILevel;
 }
 
-const UpdateLevelModal = ({ isOpen, onOpen, onOpenChange, uid }: Props) => {
-  const [isLoadingData, setIsLoadingData] = useState(false);
-  const [level, setLevel] = useState({} as ILevel);
-  const { fetchAll, updateLevelByUid } = useLevelStore();
+const UpdateLevelModal = ({
+  isOpen,
+  onOpen,
+  onOpenChange,
+  uid,
+  level,
+}: Props) => {
+  const { fetchAll, updateLevelByUid, isUpdatingLevel } = useLevelStore();
   const {
     register,
     handleSubmit,
     setValue,
     reset,
-    getValues,
-    getFieldState,
     formState: { errors },
   } = useForm<updateLevelData>({
     resolver: zodResolver(updateLevelSchema),
-    shouldUnregister: false,
   });
-  console.log("🚀 ~ UpdateLevelModal ~ getValues:", getValues());
 
   const onSubmit = async (data: updateLevelData) => {
     try {
-      await updateLevelByUid(data.uid, data);
+      await updateLevelByUid(uid, data);
       await fetchAll();
       onOpenChange(false);
     } catch (error) {
@@ -58,26 +58,6 @@ const UpdateLevelModal = ({ isOpen, onOpen, onOpenChange, uid }: Props) => {
     }
   };
 
-  const loadData = async () => {
-    setIsLoadingData(true);
-    const level = (await levelRepo.getLevelsByUid(uid)) as ILevel;
-    setLevel(level);
-    setIsLoadingData(false);
-    // setValue("img", level.img);
-    // setValue("remotePath", level.remotePath);
-    // setValue("title", level.title);
-    // setValue("description", level.description);
-    // setValue("numberOfStars", level.numberOfStars);
-    // setValue("uid", level.uid);
-    // setValue("img", level.img);
-  };
-  useEffect(() => {
-    if (isOpen) {
-      loadData();
-    }
-  }, [isOpen]);
-
-  if (isLoadingData) return null;
   return (
     <Modal
       placement="top-center"
@@ -99,6 +79,7 @@ const UpdateLevelModal = ({ isOpen, onOpen, onOpenChange, uid }: Props) => {
                 className="hidden"
                 errorMessage={errors.remotePath && errors.remotePath.message}
                 {...register("remotePath")}
+                defaultValue={level.remotePath}
               />
               <Input
                 placeholder="Insira o nome do ranking"
@@ -145,10 +126,19 @@ const UpdateLevelModal = ({ isOpen, onOpen, onOpenChange, uid }: Props) => {
             </ModalBody>
             <Divider />
             <ModalFooter>
-              <Button color="danger" variant="light" onClick={onClose}>
+              <Button
+                color="danger"
+                variant="light"
+                onClick={onClose}
+                isDisabled={isUpdatingLevel}
+              >
                 Fechar
               </Button>
-              <Button className="bg-green" type="submit">
+              <Button
+                className="bg-green"
+                type="submit"
+                isLoading={isUpdatingLevel}
+              >
                 Salvar
               </Button>
             </ModalFooter>

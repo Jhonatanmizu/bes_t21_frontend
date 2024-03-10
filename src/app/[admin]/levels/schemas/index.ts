@@ -33,7 +33,6 @@ export const createLevelSchema = z.object({
 export type createLevelData = z.infer<typeof createLevelSchema>;
 
 export const updateLevelSchema = z.object({
-  uid: z.coerce.string().default(""),
   title: z.coerce
     .string({
       required_error: "É necessário informar o nome do ranking",

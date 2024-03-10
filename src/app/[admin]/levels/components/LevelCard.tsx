@@ -23,6 +23,7 @@ const LevelCard = ({ level }: Props) => {
   const { deleteLevel, isDeletingLevel, fetchAll } = useLevelStore();
   const { title, img, uid } = level;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const handleDelete = async () => {
     if (!uid) return;
     await deleteLevel(uid);
@@ -62,6 +63,7 @@ const LevelCard = ({ level }: Props) => {
           isOpen={isOpen}
           onOpen={onOpen}
           uid={uid}
+          level={level}
           onOpenChange={onOpenChange}
         />
       )}

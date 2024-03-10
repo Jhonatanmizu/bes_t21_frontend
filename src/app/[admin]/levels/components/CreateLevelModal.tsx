@@ -38,6 +38,7 @@ const CreateLevelModal = ({ isOpen, onOpen, onOpenChange }: Props) => {
     try {
       await storeLevel(data);
       await fetchAll();
+      onOpenChange(false);
     } catch (error) {
       console.error(
         "Error when we tried to create a leve in new level page",
@@ -91,8 +92,6 @@ const CreateLevelModal = ({ isOpen, onOpen, onOpenChange }: Props) => {
                 label="Número de estrelas"
                 type="number"
                 labelPlacement="outside"
-                min={1}
-                max={5}
                 errorMessage={
                   errors.numberOfStars && errors.numberOfStars.message
                 }
