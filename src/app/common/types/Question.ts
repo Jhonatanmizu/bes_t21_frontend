@@ -7,5 +7,6 @@ export interface IQuestion {
   level: QuestionLevel;
   type: QuestionType;
   point: number;
-  correctAnswers: string[];
+  correctAnswers: string | string[];
+  wrongAnswers: string | string[];
 }

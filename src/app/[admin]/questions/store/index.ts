@@ -16,7 +16,7 @@ interface QuestionState {
 }
 
 interface QuestionActions {
-  createQuestion: (data: questionData) => Promise<void>;
+  createQuestion: (data: Partial<IQuestion>) => Promise<void>;
   getAllQuestions: () => Promise<void>;
   updateQuestionByUid: (
     uid: string,
@@ -31,7 +31,7 @@ const useQuestionStore = create<QuestionState & QuestionActions>()((set) => ({
   isCreatingQuestion: false,
   isDeletingQuestion: false,
   isUpdatingQuestion: false,
-  createQuestion: async (data: questionData) => {
+  createQuestion: async (data: Partial<IQuestion>) => {
     set({ isCreatingQuestion: true });
     try {
       await questionRepo.createQuestion(data);
@@ -67,7 +67,7 @@ const useQuestionStore = create<QuestionState & QuestionActions>()((set) => ({
       set({ isDeletingQuestion: false });
     }
   },
-  updateQuestionByUid: async (uid: string, data: Partial<questionData>) => {
+  updateQuestionByUid: async (uid: string, data: Partial<IQuestion>) => {
     set({ isUpdatingQuestion: true });
     try {
       await questionRepo.updateQuestion(uid, data);
