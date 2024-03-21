@@ -1,15 +1,18 @@
 export interface CreateLevelDTO {
-  imageUrl: string;
+  img: string;
   title: string;
   description: string;
   startIn: number;
   numberOfStars: number;
+  remotePath: string;
 }
 
 export interface UpdateLevelDto {
-  imageUrl: string;
+  uid: string;
+  img: string;
   title: string;
   description: string;
   startIn: number;
   numberOfStars: number;
+  remotePath: string;
 }

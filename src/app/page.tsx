@@ -1,9 +1,20 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+const Home = () => {
+  const route = useRouter();
+
+  useEffect(() => {
+    route.push("/admin");
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="font-bold text-3xl">Um site muito top</h1>
     </main>
   );
-}
+};
+
+export default Home;

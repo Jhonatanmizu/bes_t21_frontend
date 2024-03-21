@@ -1,7 +1,6 @@
 "use client";
-import { useRouter } from "next/navigation";
 // Types
-import { ILevel } from "@/app/common/types";
+import { ICourse } from "@/app/common/types";
 // Components
 import {
   Button,
@@ -10,23 +9,25 @@ import {
   Image,
   useDisclosure,
 } from "@nextui-org/react";
-// Stories
-import { useLevelStore } from "../store/levelStore";
-import { EditIcon, RemoveIcon } from "@/app/common/icons";
-import UpdateLevelModal from "./UpdateLevelModal";
+import UpdateCourseSessionModal from "./UpdateCourseSessionModal";
+// Stores
+import { useCourseSessionStore } from "../store/";
+// Icons
+import { RemoveIcon, EditIcon } from "@/app/common/icons";
 
 interface Props {
-  level: ILevel;
+  course: ICourse;
 }
 
-const LevelCard = ({ level }: Props) => {
-  const { deleteLevel, isDeletingLevel, fetchAll } = useLevelStore();
-  const { title, img, uid } = level;
+const CourseSessionCard = ({ course }: Props) => {
+  const { deleteCourseSession, isDeletingSession, fetchAll } =
+    useCourseSessionStore();
+  const { description, img, uid, title } = course;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDelete = async () => {
     if (!uid) return;
-    await deleteLevel(uid);
+    await deleteCourseSession(uid);
     await fetchAll();
   };
 
@@ -35,14 +36,14 @@ const LevelCard = ({ level }: Props) => {
       <Card className="w-full hover:ring-1 hover:scale-[101%]">
         <CardBody className="flex flex-row items-center justify-between">
           <div className="items-center flex gap-8">
-            <Image className="w-20 h-16" alt={title} src={img} />
+            <Image className="w-20 h-16" alt={description} src={img} />
             <h4>{title}</h4>
           </div>
           <div className="flex items-center gap-2">
             <Button
               className="bg-green text-white"
               onClick={onOpen}
-              isLoading={isDeletingLevel}
+              isLoading={isDeletingSession}
               startContent={<EditIcon />}
             >
               Atualizar
@@ -50,7 +51,7 @@ const LevelCard = ({ level }: Props) => {
             <Button
               className="bg-red text-white"
               onClick={handleDelete}
-              isLoading={isDeletingLevel}
+              isLoading={isDeletingSession}
               startContent={<RemoveIcon />}
             >
               Deletar
@@ -58,17 +59,15 @@ const LevelCard = ({ level }: Props) => {
           </div>
         </CardBody>
       </Card>
-      {isOpen && (
-        <UpdateLevelModal
-          isOpen={isOpen}
-          onOpen={onOpen}
-          uid={uid}
-          level={level}
-          onOpenChange={onOpenChange}
-        />
-      )}
+      <UpdateCourseSessionModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        fetchAll={fetchAll}
+        course={course}
+      />
     </>
   );
 };
 
-export default LevelCard;
+export default CourseSessionCard;

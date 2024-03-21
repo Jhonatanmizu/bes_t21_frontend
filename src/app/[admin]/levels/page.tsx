@@ -1,14 +1,15 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 // Stories
 import { useLevelStore } from "./store/levelStore";
 // Components
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, useDisclosure } from "@nextui-org/react";
 import LevelCard from "./components/LevelCard";
+import { AddIcon } from "@/app/common/icons";
+import CreateLevelModal from "./components/CreateLevelModal";
 
 const Levels = () => {
-  const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [searchText, setSearchText] = useState("");
   const { levels, fetchAll } = useLevelStore();
 
@@ -16,15 +17,11 @@ const Levels = () => {
     fetchAll();
   }, []);
 
-  const filteredLevels = useMemo(
-    () =>
-      levels.filter((level) =>
-        level.description
-          .toLowerCase()
-          .trim()
-          .includes(searchText.toLowerCase().trim())
-      ),
-    [searchText, levels.length]
+  const filteredLevels = levels.filter((level) =>
+    level.description
+      .toLowerCase()
+      .trim()
+      .includes(searchText.toLowerCase().trim())
   );
 
   const handleChangeSearchText = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,13 +29,19 @@ const Levels = () => {
     setSearchText(value);
   };
 
-  const handleNavigationToNewLevel = () => {
-    router.push("/admin/levels/new");
-  };
-
   return (
     <main className="flex-1">
-      <h1 className="text-3xl mb-4">Rankings</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl mb-4">Rankings</h1>
+        <Button
+          startContent={<AddIcon />}
+          className="w-auto bg-secondary text-white"
+          onPress={onOpen}
+        >
+          Adicionar
+        </Button>
+      </div>
+
       <Input
         placeholder="Pesquisar ranking"
         name="search"
@@ -53,14 +56,11 @@ const Levels = () => {
           <LevelCard level={level} key={idx} />
         ))}
       </section>
-      <div className="mt-4">
-        <Button
-          className="w-full bg-secondary text-white"
-          onClick={handleNavigationToNewLevel}
-        >
-          Criar novo
-        </Button>
-      </div>
+      <CreateLevelModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+      />
     </main>
   );
 };
