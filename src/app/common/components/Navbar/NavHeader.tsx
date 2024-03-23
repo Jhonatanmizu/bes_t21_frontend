@@ -10,8 +10,10 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Tooltip,
 } from "@nextui-org/react";
 
 // Routes
@@ -63,16 +65,17 @@ const NavHeader = () => {
           const IconComponent = adm.icon && iconMap[adm.icon];
 
           return (
-            <Button
-              isIconOnly
-              variant={clearPathName === adm.href ? "faded" : "flat"}
-              key={idx}
-              as={Link}
-              href={adm.href}
-              className="w-[50%] md:w-[30%] text-white bg-secondary font-bold hover:scale-[105%] hover:border-1 transition-all"
-            >
-              {IconComponent ? <IconComponent /> : null}
-            </Button>
+            <Tooltip key={idx} content={adm.title}>
+              <Button
+                isIconOnly
+                variant={clearPathName === adm.href ? "faded" : "flat"}
+                as={Link}
+                href={adm.href}
+                className="w-[50%] md:w-[30%] text-white bg-secondary font-bold hover:scale-[105%] hover:border-1 transition-all"
+              >
+                {IconComponent ? <IconComponent /> : null}
+              </Button>
+            </Tooltip>
           );
         })}
       </NavbarContent>
@@ -84,19 +87,21 @@ const NavHeader = () => {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarMenuItem>
+      <NavbarMenu>
         {ADMIN_ROUTES.map((adm, idx) => (
-          <Link
-            key={idx}
-            className="w-full"
-            color={clearPathName === adm.href ? "danger" : "foreground"}
-            href={adm.href}
-            size="lg"
-          >
-            {adm.title}
-          </Link>
+          <NavbarMenuItem key={idx}>
+            <Button
+              as={Link}
+              color="primary"
+              variant={clearPathName === adm.href ? "bordered" : "light"}
+              href={adm.href}
+              className="text-black hover:ring-1 transition-all"
+            >
+              {adm.title}
+            </Button>
+          </NavbarMenuItem>
         ))}
-      </NavbarMenuItem>
+      </NavbarMenu>
     </Navbar>
   );
 };
