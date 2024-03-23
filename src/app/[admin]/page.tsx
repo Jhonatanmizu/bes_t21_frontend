@@ -31,7 +31,7 @@ const Admin = () => {
             key={idx}
             as={Link}
             href={adm.href}
-            className="w-[50%] md:w-[30%] h-24 bg-secondary text-white font-bold"
+            className="w-[50%] md:w-[30%] h-24 bg-secondary text-white font-bold hover:scale-[105%]"
             startContent={IconComponent ? <IconComponent /> : null}
           >
             {adm.title}
