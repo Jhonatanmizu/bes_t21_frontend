@@ -4,7 +4,7 @@
 // Components
 import Providers from "./components/Providers";
 import WrapperContainer from "./components/WrapperContainer";
-import NavHeader from "./components/NavHeader";
+import NavHeader from "./components/Navbar/NavHeader";
 import ImagePicker from "./components/ImagePicker";
 
 /*
